@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">  
+<generatorConfiguration>  
+    <!-- 数据库驱动包位置 -->  
+    <!-- 连接的mysql是8.0以上版本，mysql连接包也要改   -->
+    <classPathEntry location="D:\repo\mysql\mysql-connector-java\8.0.13\mysql-connector-java-8.0.13.jar" />    
+    <!-- <classPathEntry location="D:\repo\com\oracle\ojdbc6\12.1.0.1-atlassian-hosted\ojdbc6-12.1.0.1-atlassian-hosted.jar" /> -->
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">  
+        <commentGenerator>  
+            <property name="suppressAllComments" value="true" />  
+        </commentGenerator>  
+        <!-- 数据库链接URL、用户名、密码    mysql的连接和之前版本的有所不同-->  
+         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/ssmdemo_db?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT%2B8" userId="root" password="123">   
+        <!-- <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@192.168.1.52:1521:EBSDBZEMSO" userId="ebs_user_zemso" password="zemso123">  -->
+        </jdbcConnection>   
+        <javaTypeResolver>  
+            <property name="forceBigDecimals" value="false" />  
+        </javaTypeResolver>  
+        <!-- 生成模型的包名和位置         targetProject是项目名 -->  
+        <javaModelGenerator targetPackage="com.demons.shiro.model" targetProject="ssm-shiro">  
+            <property name="enableSubPackages" value="true" />  
+            <property name="trimStrings" value="true" />  
+        </javaModelGenerator>  
+        <!-- 生成的映射文件包名和位置 -->  
+        <sqlMapGenerator targetPackage="com.demons.shiro.mapper" targetProject="ssm-shiro">  
+            <property name="enableSubPackages" value="true" />  
+        </sqlMapGenerator>  
+        <!-- 生成DAO的包名和位置 -->  
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.demons.shiro.mapper" targetProject="ssm-shiro">  
+            <property name="enableSubPackages" value="true" />  
+        </javaClientGenerator>  
+        <!-- 要生成那些表(更改tableName和domainObjectName就可以) -->  
+        <!-- enableUpdateByExample这些默认为true 设置为false的话，对应的增删改查方法不会生成 -->
+        <table tableName="user" domainObjectName="User" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="false" />  
+        <!-- <table tableName="course_info" domainObjectName="CourseInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" />  
+        <table tableName="course_user_info" domainObjectName="CourseUserInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" /> -->  
+    </context>  
+</generatorConfiguration>

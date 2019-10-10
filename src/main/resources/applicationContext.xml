@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+    <context:annotation-config></context:annotation-config>
+    <!-- 引入外部属性文件 -->
+    <context:property-placeholder location="classpath:db.properties" />
+    <!--配数据源 -->
+    <!-- spring提供的 数据源一共4种吧 -->
+    <!-- BasicDataSource提供了close()方法关闭数据源，所以必须设定destroy-method=”close”属性， 以便Spring容器关闭时，数据源能够正常关闭 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close">
+        <property name="driverClassName" value="${className}" />
+        <property name="url" value="${url}" />
+        <property name="username" value="${user}" />
+        <property name="password" value="${password}" />
+    </bean>
+    <!-- 配置mybitas工厂，同时指定数据源，并与MyBatis完美整合 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!-- configLocation的属性值为Mybatis的核心配置文件 -->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
+        <!-- <property name="mapperLocations" value="classpath:mapper/*.xml"></property> -->
+    </bean>
+    <!-- 指定需要扫描的包（包括子包），使注解生效。controller包在applicationContext-mvc.xml组件中已经扫描，这里不在需要扫描 -->
+    <!-- 让Bean定义注解工作起来 将这些类注册为bean -->
+    <context:component-scan base-package="com.demons.shiro.service" />
+    <!-- 4、配置声明式事务的bean -->
+<bean id="transactionManager" 
+    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+<property name="dataSource" ref="dataSource"/>
+</bean>
+<tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED" /> <!-- 支持当前事务，如果执行到save开头的任何方法时没有事务则开启一个事务 这是最常见的方式-->
+            <tx:method name="update*" propagation="REQUIRED" /><!-- 支持当前事务，如果执行到save开头的任何方法时没有事务则开启一个事务 这是最常见的方式-->
+            <tx:method name="add*" propagation="REQUIRED" /><!-- 支持当前事务，如果执行到save开头的任何方法时没有事务则开启一个事务 这是最常见的方式-->
+            <tx:method name="delete*" propagation="REQUIRED" /><!-- 支持当前事务，如果执行到save开头的任何方法时没有事务则开启一个事务 这是最常见的方式-->
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/> <!-- 支持当前事务，如果当前没有事务，就以非事务方式执行。只读 -->
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/><!-- 支持当前事务，如果当前没有事务，就以非事务方式执行。只读 -->
+            <tx:method name="*" />
+        </tx:attributes>
+    </tx:advice>
+    <!-- 开启事务注解 -->
+    <!-- <tx:annotation-driven transaction-manager="txManager" /> -->
+    
+    <!-- MyBatis 动态实现 -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 对Dao 接口动态实现，需要知道接口在哪 -->
+        <property name="basePackage" value="com.demons.shiro.mapper"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+    <!-- 配置AOP -->
+    <aop:config proxy-target-class="true">
+     <!-- 只对业务逻辑层实施事务       没扫描到包名也不会报错-->
+    <aop:pointcut id="allManagerMethod"
+        expression="execution(* com.csdn.ingo.service.*.*(..))" />
+    <aop:advisor pointcut-ref="allManagerMethod" advice-ref="txAdvice" />
+
+    </aop:config>
+    
+    <!-- 配置线程池  ThreadPoolTaskExecutor -->
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	   <!-- 核心线程数 -->     
+	   <property name="corePoolSize" value="${task.core_pool_size}" />
+	   <!-- 最大线程数 -->  
+	   <property name="maxPoolSize" value="${task.max_pool_size}" />
+	   <!-- 队列最大长度 -->
+	   <property name="queueCapacity" value="${task.queue_capacity}" />
+	   <!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+	   <property name="keepAliveSeconds" value="${task.keep_alive_seconds}" />
+	</bean>
+	<!-- 注解式 -->
+	<task:annotation-driven />
+    
+</beans>

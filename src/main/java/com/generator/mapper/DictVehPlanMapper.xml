@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.generator.mapper.DictVehPlanMapper">
+  <resultMap id="BaseResultMap" type="com.generator.model.DictVehPlan">
+    <result column="ROUTE_CODE" jdbcType="VARCHAR" property="routeCode" />
+    <result column="ROUTE_UPDOWN" jdbcType="DECIMAL" property="routeUpdown" />
+    <result column="RUN_DATE" jdbcType="VARCHAR" property="runDate" />
+    <result column="PLAN_ID" jdbcType="VARCHAR" property="planId" />
+    <result column="VEH_CODE" jdbcType="VARCHAR" property="vehCode" />
+    <result column="LEAVE_TIME" jdbcType="VARCHAR" property="leaveTime" />
+    <result column="REAL_LEAVE_TIME" jdbcType="VARCHAR" property="realLeaveTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ROUTE_CODE, ROUTE_UPDOWN, RUN_DATE, PLAN_ID, VEH_CODE, LEAVE_TIME, REAL_LEAVE_TIME
+  </sql>
+  <select id="selectByExample" parameterType="com.generator.model.DictVehPlanExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from DICT_VEH_PLAN
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.generator.model.DictVehPlanExample">
+    delete from DICT_VEH_PLAN
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.generator.model.DictVehPlan">
+    insert into DICT_VEH_PLAN (ROUTE_CODE, ROUTE_UPDOWN, RUN_DATE, 
+      PLAN_ID, VEH_CODE, LEAVE_TIME, 
+      REAL_LEAVE_TIME)
+    values (#{routeCode,jdbcType=VARCHAR}, #{routeUpdown,jdbcType=DECIMAL}, #{runDate,jdbcType=VARCHAR}, 
+      #{planId,jdbcType=VARCHAR}, #{vehCode,jdbcType=VARCHAR}, #{leaveTime,jdbcType=VARCHAR}, 
+      #{realLeaveTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.generator.model.DictVehPlan">
+    insert into DICT_VEH_PLAN
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="routeCode != null">
+        ROUTE_CODE,
+      </if>
+      <if test="routeUpdown != null">
+        ROUTE_UPDOWN,
+      </if>
+      <if test="runDate != null">
+        RUN_DATE,
+      </if>
+      <if test="planId != null">
+        PLAN_ID,
+      </if>
+      <if test="vehCode != null">
+        VEH_CODE,
+      </if>
+      <if test="leaveTime != null">
+        LEAVE_TIME,
+      </if>
+      <if test="realLeaveTime != null">
+        REAL_LEAVE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="routeCode != null">
+        #{routeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="routeUpdown != null">
+        #{routeUpdown,jdbcType=DECIMAL},
+      </if>
+      <if test="runDate != null">
+        #{runDate,jdbcType=VARCHAR},
+      </if>
+      <if test="planId != null">
+        #{planId,jdbcType=VARCHAR},
+      </if>
+      <if test="vehCode != null">
+        #{vehCode,jdbcType=VARCHAR},
+      </if>
+      <if test="leaveTime != null">
+        #{leaveTime,jdbcType=VARCHAR},
+      </if>
+      <if test="realLeaveTime != null">
+        #{realLeaveTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.generator.model.DictVehPlanExample" resultType="java.lang.Long">
+    select count(*) from DICT_VEH_PLAN
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update DICT_VEH_PLAN
+    <set>
+      <if test="record.routeCode != null">
+        ROUTE_CODE = #{record.routeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.routeUpdown != null">
+        ROUTE_UPDOWN = #{record.routeUpdown,jdbcType=DECIMAL},
+      </if>
+      <if test="record.runDate != null">
+        RUN_DATE = #{record.runDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planId != null">
+        PLAN_ID = #{record.planId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vehCode != null">
+        VEH_CODE = #{record.vehCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.leaveTime != null">
+        LEAVE_TIME = #{record.leaveTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realLeaveTime != null">
+        REAL_LEAVE_TIME = #{record.realLeaveTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update DICT_VEH_PLAN
+    set ROUTE_CODE = #{record.routeCode,jdbcType=VARCHAR},
+      ROUTE_UPDOWN = #{record.routeUpdown,jdbcType=DECIMAL},
+      RUN_DATE = #{record.runDate,jdbcType=VARCHAR},
+      PLAN_ID = #{record.planId,jdbcType=VARCHAR},
+      VEH_CODE = #{record.vehCode,jdbcType=VARCHAR},
+      LEAVE_TIME = #{record.leaveTime,jdbcType=VARCHAR},
+      REAL_LEAVE_TIME = #{record.realLeaveTime,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

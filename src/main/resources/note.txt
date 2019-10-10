@@ -1,0 +1,44 @@
+用户表User,用户权限表,权限表,菜单表,
+用户表：有用户的id
+用户权限表：有用户id，用户权限id，
+权限表:里面都是权限id,对应权限的操作（如：url,最高操作者有所有权限，所以的url都能显示，普通用户只有用户权限只能取到用户url）
+菜单表:存放url链接地址,
+步骤：
+1). 根据登录用户判断是否认证
+2). 没认证，判断用户是否存在，具有哪些权限，对应有哪些权限地址url
+3). 将这些信息都通过shiro提供的session保存，到主页面上直接进入方法，直接获取session中保存的信息（如：菜单id,权限列表...）根据菜单id，去查询出对应的url链接显示在页面上。
+4). 项目中貌似没有使用shiro提供的权限，自己通过表之间的关系.如设置字段区分 账号是否被禁用之类的
+
+1. 为什么使用MD5 盐值加密:
+2. 如何做到:
+1). 在doGetAuthenticationInfo方法返回创建SimpleAuthenticationInfo对象的时候，需要使用
+new SimpleAuthenticationInfo(principal, hashedCredentials, credentialsSalt, realmName) 构造器
+2). 使用ByteSource.Util.bytes()来计算盐值
+3). 盐值需要唯一：一般使用随机字符串或user id
+4). 使用SimpleHash(algorithmName, credentials, salt, hashIterations);来计算盐值加密后密码的值
+5). 数据库中密码肯定是加密之后的，MD5,SHA1等，通过配置文件配置加密方式或者代码中添加    项目中 盐值 用了个字段，staff_salt
+配置加密方式用的是代码方式
+
+1. 如何把一个字符串加密为MD5
+2. 替换当前Realm 的credentialsMatcher属性（源码中），直接使用HashedCredentialsMatcher对象，设置加密算法即可
+
+1. 配置多个realm认证（项目中案例）
+1). 分别写了两个AuthorizingRealm的子类SecondRealm和ShiroAuthorizingRealm 在shiro配置文件中配置了一个是MD5加密 
+一个SHA1加密    认证时（登录）会按照顺序走两个类的方法
+
+
+密码的对比：
+通过AuthenticatingRealm的credentialsMatcher属性进行密码的对比（源码中）
+
+流程
+1. 获取当前的Subject.调用SecurityUtils.getSubject()
+2. 测试当前用户是否已经被认证，即是否登录。调用Subject的isAuthenticated()
+3. 若没有被认证，则把用户名和密码封装成UsernamePasswordToken 对象
+1). 创建一个表单页面
+2). 把请求交给SpringMVC的Handler
+3). 获取用户名和密码
+4. 执行登录：调用Subject的login(UsernamePasswordToken) 方法
+5. 自定义Realm的方法，从数据库获取对应的记录，返回Shiro
+1). 实际上需要继承org.apache.shiro.realm.AuthorizingRealm类
+2). 实现doGetAuthenticationInfo(AuthenticationToken)方法
+6. 由shiro完成密码的对比

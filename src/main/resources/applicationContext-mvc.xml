@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!-- 自动扫描app下所有已经被注解过的类     将其注册为bean-->
+    <context:component-scan base-package="com.demons.shiro">
+    <!-- 添加context:include-filter   指定只扫描Controller类 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!-- <aop:config proxy-target-class="true"></aop:config> -->
+    <!-- 启动aspect的注解功能支持 -->
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    <bean class="com.demons.shiro.annotation.MethodTimeAspect"></bean>
+    <!-- 接触servlet对静态资源访问限制 -->
+    <mvc:default-servlet-handler></mvc:default-servlet-handler>
+    <!-- 扫描注解 -->
+    <mvc:annotation-driven />
+    <!-- 配置视图的前缀和后缀 -->
+    <bean id="viewResolver"
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- viewClass：JstlView表示JSP模板页面需要使用JSTL标签库，classpath中必须包含jstl的相关jar包； -->
+        <property name="viewClass"
+            value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/WEB-INF/view/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+    
+    <!-- SpringMVC国际化配置 -->
+    
+    <!-- 存储区域设置信息
+         SessionLocaleResolver类通过一个预定义会话名将区域化信息存储在会话中。
+         基于session，也有cookie的，此处没用
+     -->
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" >
+        <!-- 默认为中文 -->
+        <property name="defaultLocale" value="zh_CN" />
+    </bean>
+    <!-- 国际化资源文件 messageSource配置的是国际化资源文件的路径， classpath:messages指的是classpath路径下的 
+        messages_zh_CN.properties文件和messages_en_US.properties文件 设置“useCodeAsDefaultMessage”，默认为false，这样当Spring在ResourceBundle中找不到messageKey的话，就抛出NoSuchMessageException， 
+        把它设置为True，则找不到不会抛出异常，而是使用messageKey作为返回值。 -->
+    <bean id="messageSource"
+        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="useCodeAsDefaultMessage" value="true" />
+        <property name="basenames">
+            <list>
+                <value>classpath:language/message</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!--该拦截器通过名为”lang”的参数来拦截HTTP请求，使其重新设置页面的区域化信息 -->
+    <mvc:interceptors>
+        <bean id="localeChangeInterceptor"
+            class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang" />
+        </bean>
+    </mvc:interceptors>
+</beans>
