@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # gitCodeDemo02
 
 #### 介绍
@@ -39,4 +39,4 @@
 =======
 # ssm-shiro
 ssm+shiro权限认证+bootstrap分页+i18n国际语言切换
->>>>>>> 9a60fce9ebe5bdff69ab4a3e12b493e857e959b2
+
