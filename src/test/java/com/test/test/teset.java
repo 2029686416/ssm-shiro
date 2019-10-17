@@ -9,6 +9,7 @@ public class teset {
 		se.add("a");
 		se.add("b");
 		se.add("b");
+
 		for (Iterator iterator = se.iterator(); iterator.hasNext();) {
 			String string = (String) iterator.next();
 			System.out.println(string);
@@ -33,5 +34,7 @@ public class teset {
 		}
 
 	}*/
+
+
 	
 }

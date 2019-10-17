@@ -82,6 +82,11 @@ public class LoginController {
 		return "/index";
 		
 	}
+
+	@RequestMapping("/capacha")
+	public String capacha(){
+		return "capacha";
+	}
 	
 	@RequestMapping(value="/vue")
 	public String vue() {
