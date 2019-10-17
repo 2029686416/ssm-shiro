@@ -3,13 +3,13 @@
 
 #### 介绍
 用Git命令的方式提交项目（练习）
-
+import cn.com.client.DecodeClient;包不存在，这相关的类可以删除
 #### 软件架构
 软件架构说明
 
 
 #### 安装教程
-
+docket
 1. xxxx
 2. xxxx
 3. xxxx
