@@ -24,16 +24,7 @@ public class CaptchaController {
     @Resource
     private Producer captchaProducer;
 
-    /**
-     *
-     *                获取验证码图片
-     * @author         ccg
-     * @param         request
-     * @param         response
-     * @return
-     * @throws         IOException
-     * Created        2017年1月17日 下午5:07:28
-     */
+
     @RequestMapping("getCaptchaCode")
     public ModelAndView getCaptchaCode(HttpServletRequest request, HttpServletResponse response) throws IOException{
         HttpSession session = request.getSession();
@@ -61,15 +52,6 @@ public class CaptchaController {
         return null;
     }
 
-    /**
-     *
-     *                前端输入的验证码与生成的对比
-     * @author         ccg
-     * @param         request
-     * @param         response
-     * @param         captchaCode
-     * Created        2017年1月17日 下午5:34:23
-     */
     @RequestMapping("checkCaptchaCode")
     public void checkCaptchaCode(HttpServletRequest request, HttpServletResponse response,@RequestParam("captchaCode") String captchaCode){
         System.out.println("页面输入验证码===="+captchaCode);
