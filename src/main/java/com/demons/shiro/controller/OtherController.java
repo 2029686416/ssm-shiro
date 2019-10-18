@@ -43,7 +43,8 @@ public class OtherController {
 	
 	@Resource(name = "taskExecutor")  
 	private TaskExecutor taskExecutor;
-	
+
+
 	@RequestMapping(value="/getList")
 	@ResponseBody
 	public Map<String, Object> getList(String cp,String ps,String name) {
@@ -95,7 +96,7 @@ public class OtherController {
 		return null;
 		
 	}
-	
+
 	@RequestMapping(value="/te")
 	@ResponseBody
 	public List<Map<String, Object>> te(@RequestParam("id") String  id,@RequestParam("name") String name) {
