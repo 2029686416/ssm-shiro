@@ -48,7 +48,7 @@ public class OtherController {
 	@RequestMapping(value="/getList")
 	@ResponseBody
 	public Map<String, Object> getList(String cp,String ps,String name) {
-		System.out.println(cp+"1--->"+ps);
+		System.out.println(cp+"1---> "+ps);
 		Map<String, Object> map = new HashMap<String, Object>();
 		int num = userMapper.selectListNum();
 		PageBean<User> page = new PageBean<User>(Integer.parseInt(cp), Integer.parseInt(ps), num);
