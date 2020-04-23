@@ -13,14 +13,14 @@ public class Test {
 	
 	@PostConstruct
 	void started() {
-		System.out.println("123");
+		System.out.println("12");
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-	} 
+	}
 	
 	public static void main(String[] args) {
 		System.out.println("args:"+args.toString());
 		for (String arg : args) {
-			System.out.println(arg);
+			System.out.println(arg); 
 		}
 		System.out.println(args.length);
 
