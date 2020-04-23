@@ -15,7 +15,7 @@ public class Test {
 	void started() {
 		System.out.println("123");
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-	}
+	} 
 	
 	public static void main(String[] args) {
 		System.out.println("args:"+args.toString());
