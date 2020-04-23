@@ -13,7 +13,7 @@ public class Test {
 	
 	@PostConstruct
 	void started() {
-		System.out.println("123");
+		System.out.println("123");  
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
 	} 
 	
